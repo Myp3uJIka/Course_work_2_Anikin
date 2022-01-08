@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from functions import search_comments, get_post, search_content_post, search_user_post
+from functions import read_json, search_comments, get_post, search_content_post, search_user_post, comments_in_posts
 
 POSTS_PATH = 'data/posts.json'
 COMMENTS_PATH = 'data/comments.json'
@@ -9,7 +9,9 @@ app = Flask(__name__)
 
 @app.route('/')  # декоратор для стартовой страницы
 def start_page():
-    return render_template('index.html')
+    comments_in_posts(POSTS_PATH, COMMENTS_PATH)
+    posts = read_json(POSTS_PATH)
+    return render_template('index.html', posts=posts)
 
 
 @app.route('/posts/<post_id>')  # вывод поста с комментариями
@@ -28,9 +30,9 @@ def find_posts():
     return render_template('search.html', posts=posts, posts_count=posts_count)
 
 
-@app.route('/users/<username>')
+@app.route('/users/<username>')  # вывод публикаций пользователя
 def find_user_posts(username):
-    posts = search_user_post(POSTS_PATH, username)
+    posts = search_user_post(POSTS_PATH, username)  # получение списка постов
     return render_template('user-feed.html', posts=posts)
 
 

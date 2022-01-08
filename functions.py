@@ -7,6 +7,34 @@ def read_json(filename):  # функция для чтения json-файла
     return data
 
 
+def comments_in_posts(posts, comments):
+    posts_list = read_json(posts)
+    comments_list = read_json(comments)
+    comments_count_list = {}
+    for comment in comments_list:
+        coincidence = False
+        for key in comments_count_list.keys():
+            if comment['post_id'] == key:
+                comments_count_list[key] += 1
+                coincidence = True
+        if not coincidence:
+            comments_count_list[comment['post_id']] = 1
+    for post in posts_list:
+        coincidence = False
+        for comment, count in comments_count_list.items():
+            if post['pk'] == comment:
+                post['comments_count'] = count
+                coincidence = True
+        if not coincidence:
+            post['comments_count'] = 0
+    with open(posts, 'w', encoding='utf-8') as f:
+        json.dump(posts_list, f, sort_keys=False, indent=4, ensure_ascii=False, separators=(',', ': '))
+    return
+
+
+
+
+
 def search_comments(comments, post_id):  # функция для поиска комментариев к посту по номеру публикации
     data = read_json(comments)
     result = []
@@ -35,7 +63,7 @@ def search_content_post(posts, key):  # функция для поска пос�
     return result
 
 
-def search_user_post(posts, user_name):
+def search_user_post(posts, user_name):  # функция для поиска постов пользователя
     data = read_json(posts)
     result = []
     for post in data:
