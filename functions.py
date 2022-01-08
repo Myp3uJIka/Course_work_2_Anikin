@@ -7,7 +7,7 @@ def read_json(filename):  # функция для чтения json-файла
     return data
 
 
-def find_comments(comments, post_id):  # функция для поиска комментариев к посту по номеру публикации
+def search_comments(comments, post_id):  # функция для поиска комментариев к посту по номеру публикации
     data = read_json(comments)
     result = []
     for comment in data:
@@ -23,3 +23,14 @@ def get_post(posts, pk):  # функция для поиска поста но �
         if post['pk'] == pk:
             result = post
     return result
+
+
+def search_post(posts, key):  # функция для поска постов по фрагменту описания
+    data = read_json(posts)
+    result = []
+    for post in data:
+        if len(result) != 10:  # ограничение на количество постов в результате (не больше 10 шт.)
+            if key.lower() in post['content'].lower():
+                result.append(post)
+    return result
+
