@@ -27,7 +27,8 @@
     <section class="items">
       <div class="items__item item item--post">
         <div class="item__top">
-          <a href="/user-feed.html" class="item__head">
+          <a href="/users/{{post['poster_name']}}" class="item__head">
+<!--            <a href="/user-feed.html" class="item__head">-->
             <div class="item__ava-wrap">
               <img src={{post['poster_avatar']}} alt="" class="item__ava" width="47">
 <!--              <img src="/static/img/ava1.png" alt="" class="item__ava" width="47">-->
@@ -54,7 +55,7 @@
         </div>
         <div class="item__bottom">
           <div class="item__post-info">
-            <p class="item__comments-counter">Комментариев: {{len_comments}}</p>
+            <p class="item__comments-counter">Комментариев: {{post['comments_count']}}</p>
 <!--            <p class="item__comments-counter">3 комментария</p>-->
             <div class="item__counter">
               <img src="/static/img/eye.png" alt="" class="item__counter-icon" width="26">
