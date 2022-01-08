@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from functions import search_comments, get_post, search_post
+from functions import search_comments, get_post, search_content_post, search_user_post
 
 POSTS_PATH = 'data/posts.json'
 COMMENTS_PATH = 'data/comments.json'
@@ -23,9 +23,15 @@ def get_comments(post_id):
 @app.route('/search/')  # вывод постов по совпадению с описанием
 def find_posts():
     s = request.args.get('s')
-    posts = search_post(POSTS_PATH, s)  # получение списка совпадений
+    posts = search_content_post(POSTS_PATH, s)  # получение списка совпадений
     posts_count = len(posts)  # получение количества сопадений
     return render_template('search.html', posts=posts, posts_count=posts_count)
+
+
+@app.route('/users/<username>')
+def find_user_posts(username):
+    posts = search_user_post(POSTS_PATH, username)
+    return render_template('user-feed.html', posts=posts)
 
 
 if __name__ == '__main__':

@@ -25,12 +25,21 @@ def get_post(posts, pk):  # функция для поиска поста но �
     return result
 
 
-def search_post(posts, key):  # функция для поска постов по фрагменту описания
+def search_content_post(posts, key):  # функция для поска постов по фрагменту описания
     data = read_json(posts)
     result = []
     for post in data:
         if len(result) != 10:  # ограничение на количество постов в результате (не больше 10 шт.)
             if key.lower() in post['content'].lower():
                 result.append(post)
+    return result
+
+
+def search_user_post(posts, user_name):
+    data = read_json(posts)
+    result = []
+    for post in data:
+        if user_name.lower() in post['poster_name'].lower():
+            result.append(post)
     return result
 
