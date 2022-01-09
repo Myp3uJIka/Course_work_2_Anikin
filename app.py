@@ -1,9 +1,12 @@
 from flask import Flask, request, render_template
+from werkzeug.utils import redirect
+
 from functions import read_json, search_comments, get_post, search_content_post, search_user_post, comments_in_posts, \
-    search_tags, get_post_with_tag
+    search_tags, get_post_with_tag, make_bookmark, read_json, delete_bookmark
 
 POSTS_PATH = 'data/posts.json'
 COMMENTS_PATH = 'data/comments.json'
+BOOKMARKS_PATH = 'data/bookmarks.json'
 
 app = Flask(__name__)
 
@@ -36,11 +39,29 @@ def find_user_posts(username):
     return render_template('user-feed.html', posts=posts)
 
 
-@app.route('/tag/<tagname>')
+@app.route('/tag/<tagname>')  # поиск тегов
 def find_tag(tagname):
     search_tags(POSTS_PATH)  # обновление информации о количестве тегов в публикациях
     posts = get_post_with_tag(POSTS_PATH, tagname)  # получение списка постов по совпадению с тегом
     return render_template('tag.html', posts=posts, tag_name=tagname)
+
+
+@app.route('/bookmarks/')  # отображение закладок
+def open_bookmarks():
+    posts = read_json(BOOKMARKS_PATH)
+    return render_template('bookmarks.html', posts=posts)
+
+
+@app.route('/bookmarks/add/<post_id>')  # сохранение публикации в файле закладок
+def save_bookmark(post_id):
+    make_bookmark(POSTS_PATH, post_id, BOOKMARKS_PATH)
+    return redirect('/', code=302)
+
+
+@app.route('/bookmarks/remove/<post_id>')  # удаление публикации из файла закладок
+def remove_bookmark(post_id):
+    delete_bookmark(BOOKMARKS_PATH, post_id)
+    return redirect('/', code=302)
 
 
 if __name__ == '__main__':

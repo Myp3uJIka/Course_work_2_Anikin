@@ -84,7 +84,6 @@ def search_tags(posts):  # функция для извлечения списк
         post['tags'] = tags  # создание записи к посту со всеми тегами
     with open(posts, 'w', encoding='utf-8') as f:
         json.dump(data, f, sort_keys=False, indent=4, ensure_ascii=False, separators=(',', ': '))
-    return
 
 
 def get_post_with_tag(posts, tag_name):  # получение списка постов по совпадению с тегом
@@ -95,3 +94,28 @@ def get_post_with_tag(posts, tag_name):  # получение списка по�
             if tag_name in post['tags']:
                 result.append(post)  # добавление постов с совпадением в финальный список
     return result
+
+
+def make_bookmark(posts, post_id, bookmarks):  # функция для добавления поста в закладки
+    bookmarks_dic = read_json(bookmarks)
+    data = read_json(posts)
+    coincidence = False  # переменная-маркер для проверки наличия поста в закладках перед добавлением
+    if bookmarks_dic:
+        for post in bookmarks_dic:
+            if post['pk'] == int(post_id):
+                coincidence = True
+    if not coincidence:  # цикл в случае отсутствия указанного post_id в закладках
+        for post in data:
+            if int(post_id) == post['pk']:
+                bookmarks_dic.append(post)  # добавление поста в закладки
+    with open(bookmarks, 'w', encoding='utf-8') as f:  # запись в файл bookmarks обновлённой информации
+        json.dump(bookmarks_dic, f, sort_keys=False, indent=4, ensure_ascii=False, separators=(',', ': '))
+
+
+def delete_bookmark(bookmarks, post_id):  # функция для удаления поста из закладок
+    bookmarks_dic = read_json(bookmarks)
+    for post in bookmarks_dic:
+        if post['pk'] == int(post_id):
+            bookmarks_dic.remove(post)
+    with open(bookmarks, 'w', encoding='utf-8') as f:
+        json.dump(bookmarks_dic, f, sort_keys=False, indent=4, ensure_ascii=False, separators=(',', ': '))
