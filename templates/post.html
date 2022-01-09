@@ -17,7 +17,6 @@
         </svg>
       </a>
       <a href="/posts/{{post_id}}" class="header__logo-link">
-<!--      <a href="/" class="header__logo-link">-->
         <svg class="header__logo" width="64" height="26">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#post"></use>
         </svg>
@@ -29,13 +28,10 @@
       <div class="items__item item item--post">
         <div class="item__top">
           <a href="/users/{{post['poster_name']}}" class="item__head">
-<!--            <a href="/user-feed.html" class="item__head">-->
             <div class="item__ava-wrap">
               <img src={{post['poster_avatar']}} alt="" class="item__ava" width="47">
-<!--              <img src="/static/img/ava1.png" alt="" class="item__ava" width="47">-->
             </div>
             <span class="item__username">{{post['poster_name']}}</span>
-<!--            <span class="item__username">Username</span>-->
           </a>
           <button type="button" class="item__bookmark-btn">
               <a href="/bookmarks/add/{{post['pk']}}">
@@ -45,25 +41,16 @@
         </div>
         <a href="" class="item__post-link">
           <img src={{post['pic']}} alt="" width="348" class="item__post-img">
-<!--          <img src="/static/img/post1.jpg" alt="" width="348" class="item__post-img">-->
         </a>
         <div class="item__descr">
-          <p class="item__text">
-            {{post.content|safe}}
-<!--            Закрытые бутерброды пришли к&nbsp;нам из&nbsp;Англии. Вкусные и&nbsp;простые рецепты сэндвичей с&nbsp;фото позволят вам разнообразить завтраки и&nbsp;сделать перекусы более сытными! Они могут быть, как горячими, так и&nbsp;холодными.-->
-<!--          </p>-->
-<!--          <p class="item__text">-->
-<!--            Итальянские закрытые сэндвичи называются панини. Для их&nbsp;приготовления берут чиабатту. В&nbsp;классическом рецепте используют традиционные итальянские продукты: помидоры, базилик, мацареллу.-->
-          </p>
+          <p class="item__text">{{post.content|safe}}</p>
         </div>
         <div class="item__bottom">
           <div class="item__post-info">
             <p class="item__comments-counter">Комментариев: {{post['comments_count']}}</p>
-<!--            <p class="item__comments-counter">3 комментария</p>-->
             <div class="item__counter">
               <img src="/static/img/eye.png" alt="" class="item__counter-icon" width="26">
               <span class="item__counter-text">{{post['views_count']}}</span>
-<!--              <span class="item__counter-text">1023</span>-->
             </div>
           </div>
           <div class="item__comments">
@@ -72,25 +59,13 @@
               <b>{{comment['commenter_name']}}:</b> {{comment['comment']}}
             </p>
             {% endfor %}
-<!--            <p class="item__comment">-->
-<!--              <b>user 1:</b> комментарий пользователя который его оставил-->
-<!--            </p>-->
-<!--            <p class="item__comment">-->
-<!--              <b>user 2:</b> еще один комментарий-->
-<!--            </p>-->
-<!--            <p class="item__comment">-->
-<!--              <b>user 3:</b> и&nbsp;какой-то коммент еще-->
-<!--            </p>-->
           </div>
           <form action="/posts/{{post.pk}}/new_comment" class="item__comment-form comment-form">
-<!--              <form action="/" class="item__comment-form comment-form">-->
             <div class="comment-form__input-wrap">
               <input type="search" class="comment-form__input" placeholder="Ваше имя" name="commenter_name">
-<!--                <input type="search" class="comment-form__input" placeholder="Ваше имя">-->
             </div>
             <div class="comment-form__input-wrap">
               <textarea class="comment-form__textarea" placeholder="Ваш комментарий" rows="6" name="comment"></textarea>
-<!--                <textarea class="comment-form__textarea" placeholder="Ваш комментарий" rows="6"></textarea>-->
             </div>
             <button type="submit" class="comment-form__btn">Отправить</button>
           </form>
