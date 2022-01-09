@@ -29,7 +29,9 @@ def get_comments(post_id):
 @app.route('/search/', methods=['GET', 'POST'])  # вывод постов по совпадению с описанием
 def find_posts():
     s = request.args.get('s')
-    posts = search_content_post(POSTS_PATH, s)  # получение списка совпадений
+    posts = []
+    if s:
+        posts = search_content_post(POSTS_PATH, s)  # получение списка совпадений
     posts_count = len(posts)  # получение количества сопадений
     return render_template('search.html', posts=posts, posts_count=posts_count)
 

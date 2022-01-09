@@ -76,12 +76,18 @@ def search_tags(posts):  # функция для извлечения списк
     for post in data:
         tags_list = set()  # создание множества (без повторения одинаковых значений)
         words = post['content'].split()  # создание словаря из слов в описании поста для дальнейшей обработки
-        for teg in words:
-            if teg.startswith('#'):
-                tags_list.add(teg[1:])  # добавление в множество совпадений по словам начинающимся с '#'
-        tags = list(tags_list)  # создание списка для дальнейшей сортировки по алфавиту
-        tags.sort()  # сортировка списка
-        post['tags'] = tags  # создание записи к посту со всеми тегами
+        for i, tag in enumerate(words):
+            if tag.startswith('#'):
+                tags_list.add(tag[1:])  # добавление в множество совпадений по словам начинающимся с '#'
+                words[i] = f'<a href="/tag/{tag[1:]}">{tag}</a>'  # добалвение HTML-обёртки слову для использования
+                # ссылок поиска
+        if tags_list:  # условие "если в описании были найдены теги"
+            tags_list = list(tags_list)  # преобразование множества в список
+            post['tags'] += tags_list  # сложение уже существующего списка с полученным при помощи цикла
+            post['tags'] = set(post['tags'])  # преобразование списка во множество (для исключения повторений)
+            post['tags'] = list(post['tags'])  # преобразование множества в список для сортировки
+            post['tags'].sort()  # сортировка
+        post['content'] = " ".join(words)  # склеивание строки
     with open(posts, 'w', encoding='utf-8') as f:
         json.dump(data, f, sort_keys=False, indent=4, ensure_ascii=False, separators=(',', ': '))
 
