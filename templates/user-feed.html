@@ -41,14 +41,7 @@
           <img src={{post['pic']}} alt="" width="348" class="item__post-img">
 <!--          <img src="/static/img/post5.jpg" alt="" width="348" class="item__post-img">-->
         </a>
-        <p class="item__descr">
-            {% for tag in post['tags'] %}
-            <a href="/tag/{{tag}}" class="item__tag">
-                {{tag}}
-            </a>
-            {% endfor %}
-            {{post['content']}}
-        </p>
+        <p class="item__descr">{{post['content']|safe}}</p>
 <!--        <p class="item__descr"><a href="#" class="item__tag">#food</a> Текст описания коротки...</p>-->
         <div class="item__post-info">
           <p class="item__comments-counter">Комментариев: {{post['comments_count']}}</p>

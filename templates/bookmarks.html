@@ -46,7 +46,7 @@
           <img src={{post.pic}} alt="" width="348" class="item__post-img">
 <!--            <img src="/static/img/post5.jpg" alt="" width="348" class="item__post-img">-->
         </a>
-        <p class="item__descr">{{post.content}}<a href="/posts/{{post.pk}}" class="item__btn-more"></a></p>
+        <p class="item__descr">{{post.content|safe}}<a href="/posts/{{post.pk}}" class="item__btn-more"></a></p>
 <!--          <p class="item__descr">Текст описания длинный... <a href="/post.html" class="item__btn-more">Еще</a></p>-->
         <div class="item__post-info">
           <a href="/posts/{{post.pk}}" class="item__btn-more">Показать комментарии ({{post.comments_count}})</a>
