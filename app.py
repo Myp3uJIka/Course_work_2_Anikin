@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 from werkzeug.utils import redirect
 
 from functions import read_json, search_comments, get_post, search_content_post, search_user_post, comments_in_posts, \
-    search_tags, get_post_with_tag, make_bookmark, delete_bookmark
+    search_tags, get_post_with_tag, make_bookmark, delete_bookmark, add_comment
 
 POSTS_PATH = 'data/posts.json'
 COMMENTS_PATH = 'data/comments.json'
@@ -63,6 +63,14 @@ def save_bookmark(post_id):
 def remove_bookmark(post_id):
     delete_bookmark(BOOKMARKS_PATH, post_id)
     return redirect('/', code=302)
+
+
+@app.route('/posts/<post_id>/new_comment')  # вьюшка для добавления комментария к посту
+def new_comment(post_id):
+    name = request.args.get("commenter_name")
+    comment = request.args.get("comment")
+    add_comment(COMMENTS_PATH, post_id, name, comment)
+    return redirect('/posts/{}'.format(post_id), code=302)
 
 
 if __name__ == '__main__':

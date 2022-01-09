@@ -119,3 +119,20 @@ def delete_bookmark(bookmarks, post_id):  # функция для удалени
             bookmarks_dic.remove(post)
     with open(bookmarks, 'w', encoding='utf-8') as f:
         json.dump(bookmarks_dic, f, sort_keys=False, indent=4, ensure_ascii=False, separators=(',', ': '))
+
+
+def add_comment(comments, post_id, name, comment):  # функция для добавления комментария
+    data = read_json(comments)  # читаем JSON-файл с комментариями
+    if not name:  # если не указано имя, назначаем шаблонное
+        name = 'no_name'
+    if not comment:  # если не указан комментарий, назначаем шаблонный
+        comment = 'no_comment'
+    new_comment = {  # создаём запись нового комментария
+        "post_id": int(post_id),
+        "commenter_name": name,
+        "comment": comment,
+        "pk": len(data) + 1,  # присваиваем порядковый номер посту +1 от общего количества постов
+    }
+    data.append(new_comment)  # добавление нового поста в общий список
+    with open(comments, 'w', encoding='utf-8') as f:  # запись в JSON-файл
+        json.dump(data, f, sort_keys=False, indent=4, ensure_ascii=False, separators=(',', ': '))
