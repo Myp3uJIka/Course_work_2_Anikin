@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 from werkzeug.utils import redirect
 
 from functions import read_json, search_comments, get_post, search_content_post, search_user_post, comments_in_posts, \
-    search_tags, get_post_with_tag, make_bookmark, read_json, delete_bookmark
+    search_tags, get_post_with_tag, make_bookmark, delete_bookmark
 
 POSTS_PATH = 'data/posts.json'
 COMMENTS_PATH = 'data/comments.json'
@@ -15,7 +15,8 @@ app = Flask(__name__)
 def start_page():
     comments_in_posts(POSTS_PATH, COMMENTS_PATH)  # обновление информации о количестве постов
     posts = read_json(POSTS_PATH)
-    return render_template('index.html', posts=posts)
+    bookmarks_count = len(read_json(BOOKMARKS_PATH))
+    return render_template('index.html', posts=posts, bookmarks_count=bookmarks_count)
 
 
 @app.route('/posts/<post_id>')  # вывод поста с комментариями
@@ -25,8 +26,8 @@ def get_comments(post_id):
     return render_template('post.html', post=post, comments=comments, post_id=post_id)
 
 
-@app.route('/search/')  # вывод постов по совпадению с описанием
-def find_posts():  # TODO сделать переходи из формы
+@app.route('/search/', methods=['GET', 'POST'])  # вывод постов по совпадению с описанием
+def find_posts():
     s = request.args.get('s')
     posts = search_content_post(POSTS_PATH, s)  # получение списка совпадений
     posts_count = len(posts)  # получение количества сопадений
